@@ -1,0 +1,48 @@
+-- Draggable Instant Leave Button with 5s Cooldown
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- Create GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "LeaveGui"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- Create button
+local button = Instance.new("TextButton")
+button.Parent = gui
+button.Size = UDim2.new(0, 120, 0, 40)
+button.Position = UDim2.new(0.05, 0, 0.1, 0)
+button.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.TextScaled = true
+button.BorderSizePixel = 0
+button.Font = Enum.Font.GothamBold
+button.Active = true
+button.Draggable = true
+button.AutoButtonColor = false
+
+-- Rounded corners
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 8)
+corner.Parent = button
+
+-- Cooldown
+local cooldown = 5
+button.Text = "WAIT " .. cooldown
+for i = cooldown, 1, -1 do
+    button.Text = "WAIT " .. i
+    task.wait(1)
+end
+
+-- Enable button
+button.Text = "LEAVE"
+button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+button.AutoButtonColor = true
+local enabled = true
+
+-- Click = leave game
+button.MouseButton1Click:Connect(function()
+    if not enabled then return end
+    player:Kick("Successfully left")
+end)
